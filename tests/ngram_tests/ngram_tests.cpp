@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-TEST(Lab2SuiteUnique, Test1) {
+TEST(NgramSuite, Test1) {
     ngram ng;
     ng.set_ngramms("longitude");
     std::string str = "git";

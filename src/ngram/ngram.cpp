@@ -1,4 +1,4 @@
-#include "ngram.hpp"
+#include "ngram/ngram.hpp"
 #include <iostream>
 #include <map>
 #include <string>
@@ -49,12 +49,22 @@ std::vector<std::string> ngram::get_ngramms(std::string word) {
     return ngramms;
 }
 
-int main() {
-
-    ngram ng;
-    ng.set_ngramms("longitude");
-    ng.set_ngramms("latitude");
-    ng.print_map();
-    // std::string word = get_word();
+int ngram::is_exists(std::string &key) {
+    auto it = mp.begin();
+    for (int i = 0; it != mp.end(); it++, i++) { // выводим их
+        if (it->first == key) {
+            return 1;
+        }
+    }
     return 0;
 }
+
+// int main() {
+
+//     ngram ng;
+//     ng.set_ngramms("longitude");
+//     ng.set_ngramms("latitude");
+//     ng.print_map();
+//     // std::string word = get_word();
+//     return 0;
+// }

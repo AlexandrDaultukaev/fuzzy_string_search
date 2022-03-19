@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -11,4 +13,5 @@ class ngram {
     void print_map();
     void set_ngramms(const std::string &word);
     static std::vector<std::string> get_ngramms(std::string word);
+    int is_exists(std::string &key);
 };

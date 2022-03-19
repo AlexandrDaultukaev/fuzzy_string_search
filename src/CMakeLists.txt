@@ -1,19 +1,14 @@
-add_executable(ngram)
-add_library(ngram_lib STATIC ngram/ngram.hpp)
-set(INCLUDE_PATH ${PROJECT_SOURCE_DIR}/src/ngram)
+add_library(ngram_lib STATIC ngram/ngram.hpp ngram/ngram.cpp)
+set(INCLUDE_PATH ${PROJECT_SOURCE_DIR}/src)
 
-target_sources(
-    ngram
-    PRIVATE
-        ngram/ngram.cpp
-)
 
 include(CompileOptions)
-set_compile_options(ngram)
 set_compile_options(ngram_lib)
 
-target_link_libraries(
-    ngram
+target_include_directories(
+    ngram_lib
     PRIVATE
-        ngram_lib
+        ${CMAKE_CURRENT_LIST_DIR}
+    PUBLIC
+        ${INCLUDE_PATH}
 )

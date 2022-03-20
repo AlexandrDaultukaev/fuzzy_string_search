@@ -1,5 +1,10 @@
 set(SRC_PATH {CMAKE_SOURCE_DIR}/src)
 
+# add_executable(
+#     sw_tests
+#     self-written_tests.cpp
+# )
+
 enable_testing()
 
 add_executable(
@@ -14,6 +19,9 @@ target_include_directories(
     PUBLIC
         ${SRC_PATH}
 )
+
+
+
 
 target_link_libraries(
     ngram_tests

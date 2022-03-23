@@ -14,10 +14,10 @@ struct WordFrequency {
 class Ngram {
     std::map<std::string, std::vector<std::string>> mp;
     WordFrequency freq;
-    void install_dict();
+    void install_dict(const char *path);
 
   public:
-    Ngram(int set_empty_dict = 0);
+    Ngram(const char *path = "");
     static void dump_ngrams(std::vector<std::string> &v);
     void print_map();
     void set_ngramms(const std::string &word);

@@ -9,8 +9,8 @@
 
 const std::size_t BUFSIZE = 50;
 
-void Ngram::install_dict() {
-    std::ifstream fin("words_alpha.txt");
+void Ngram::install_dict(const char *path) {
+    std::ifstream fin(path);
     if (fin.fail()) {
         throw std::runtime_error("..");
         exit(EXIT_FAILURE);
@@ -25,9 +25,9 @@ void Ngram::install_dict() {
     fin.close();
 }
 
-Ngram::Ngram(int set_empty_dict) {
-    if (set_empty_dict == 0) {
-        install_dict();
+Ngram::Ngram(const char *path) {
+    if (path[0] != '\0') {
+        install_dict(path);
     }
 }
 

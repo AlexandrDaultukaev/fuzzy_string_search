@@ -5,23 +5,23 @@
 #include <vector>
 
 TEST(NgramSuite, Test1) {
-    Ngram ng;
+    NgramBuilder ng;
     ng.set_ngramms("longitude");
     std::string str = "git";
     EXPECT_EQ(ng.exists(str), true);
 }
 
 TEST(NgramSuite, Test2) {
-    Ngram ng("words_alpha.txt");
-    std::vector<std::string> word = ng.search_ngram("ltitde");
-    std::vector<std::string> word2;
-    word2.push_back("multititular");
-    EXPECT_EQ(word, word2);
+    NgramBuilder ng("words_alpha.txt");
+    NgramSearcher ns(&ng);
+    std::vector<std::string> word = ns.get_best_match("ltitde");
+    EXPECT_EQ(std::vector<std::string>({"multititular"}), word);
 }
 
 TEST(NgramSuite, Test3) {
-    Ngram ng("words_alpha.txt");
-    std::vector<std::string> word = ng.search_ngram("latitude");
+    NgramBuilder ng("words_alpha.txt");
+    NgramSearcher ns(&ng);
+    std::vector<std::string> word = ns.get_best_match("latitude");
     EXPECT_EQ(
         word,
         std::vector<std::string>(
@@ -33,23 +33,39 @@ TEST(NgramSuite, Test3) {
              "platitudes",
              "platitudinisation",
              "platitudinization"}));
-    word = ng.search_ngram("ltitde");
-    std::vector<std::string> word2;
-    word2.push_back("multititular");
-    EXPECT_EQ(word, word2);
+    word = ns.get_best_match("ltitde");
+    EXPECT_EQ(word, std::vector<std::string>(
+            {"multititular"}));
 }
 
 
 TEST(NgramSuite, Test4) {
-    Ngram ng("words_alpha.txt");
-    std::vector<std::string> word = ng.search_ngram("la");
+    NgramBuilder ng("words_alpha.txt");
+    NgramSearcher ns(&ng);
+    std::vector<std::string> word = ns.get_best_match("la");
     std::vector<std::string> empty_v;
     EXPECT_EQ(word, empty_v);
 }
 
+TEST(NgramSuite, Test5) {
+    NgramBuilder ng("words_alpha.txt");
+    NgramSearcher ns(&ng);
+    std::vector<std::string> word = ns.get_best_match("latitude");
+
+    NgramBuilder ng_empty;
+    ng_empty.set_ngramms("longitude");
+    ng_empty.set_ngramms("latitude");
+
+    ns.change_ngram_builder(&ng_empty);
+    word = ns.get_best_match("atitud");
+    EXPECT_EQ(std::vector<std::string>(
+            {"latitude"}), word);
+}
+
 TEST(NgramSuite, NegativeTest1) {
-    Ngram ng("words_alpha.txt");
-    std::vector<std::string> word = ng.search_ngram("latitude");
+    NgramBuilder ng("words_alpha.txt");
+    NgramSearcher ns(&ng);
+    std::vector<std::string> word = ns.get_best_match("latitude");
     EXPECT_NE(
         word,
         std::vector<std::string>(

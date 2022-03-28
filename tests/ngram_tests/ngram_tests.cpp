@@ -33,7 +33,12 @@ TEST(NgramSuite, Test3) {
              "platitudes",
              "platitudinisation",
              "platitudinization"}));
+    word = ng.search_ngram("ltitde");
+    std::vector<std::string> word2;
+    word2.push_back("multititular");
+    EXPECT_EQ(word, word2);
 }
+
 
 TEST(NgramSuite, Test4) {
     Ngram ng("words_alpha.txt");

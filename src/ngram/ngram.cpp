@@ -1,13 +1,12 @@
 #include "ngram/ngram.hpp"
 //#include "ngram.hpp"
 #include <array>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-
-const std::size_t BUFSIZE = 50;
 
 void Ngram::install_dict(const char *path) {
     std::ifstream fin(path);
@@ -16,17 +15,15 @@ void Ngram::install_dict(const char *path) {
         exit(EXIT_FAILURE);
     }
     std::string word;
-    int i = 0;
     while (!fin.eof()) {
         getline(fin, word);
         set_ngramms(word);
-        i++;
     }
     fin.close();
 }
 
 Ngram::Ngram(const char *path) {
-    if (path[0] != '\0') {
+    if (strlen(path) != 0) {
         install_dict(path);
     }
 }
@@ -38,11 +35,11 @@ void Ngram::dump_ngrams(std::vector<std::string> &v) {
 }
 
 void Ngram::print_map() {
-    auto it = mp.begin();
-    for (int i = 0; it != mp.end(); it++, i++) { // выводим их
+    auto it = ngrams.begin();
+    for (int i = 0; it != ngrams.end(); it++, i++) { // выводим их
         std::cout << i << ")"
                   << " Key " << it->first << " [";
-        for (std::size_t i = 0; i < mp[it->first].size(); i++) {
+        for (std::size_t i = 0; i < ngrams[it->first].size(); i++) {
             std::cout << it->second[i] << " ";
         }
         std::cout << "]\n";
@@ -55,7 +52,7 @@ void Ngram::set_ngramms(const std::string &word) {
     }
     std::vector<std::string> v = get_ngramms(word);
     for (auto &i : v) {
-        mp[i].push_back(word);
+        ngrams[i].push_back(word);
     }
 }
 std::vector<std::string> Ngram::get_ngramms(std::string word) {
@@ -67,8 +64,8 @@ std::vector<std::string> Ngram::get_ngramms(std::string word) {
 }
 
 int Ngram::exists(std::string &key) {
-    auto it = mp.begin();
-    for (; it != mp.end(); it++) {
+    auto it = ngrams.begin();
+    for (; it != ngrams.end(); it++) {
         if (it->first == key) {
             return 1;
         }
@@ -81,13 +78,14 @@ std::vector<std::string> Ngram::search_ngram(std::string word) {
     for (auto &i : ngramms) {
         // std::cout << "i)" << i << "\n";
         if (exists(i) != 0) {
-            std::vector<std::string> v = mp[i];
+            std::vector<std::string> v = ngrams[i];
             for (auto &j : v) {
                 freq.increment(j);
             }
         }
     }
     std::vector<std::string> candidates = freq.get_best_candidates();
+    freq.reset();
     // std::cout << candidates.size() << "\n";
     // for (auto &i : candidates) {
     //     std::cout << i << "\n";
@@ -96,6 +94,7 @@ std::vector<std::string> Ngram::search_ngram(std::string word) {
 }
 
 void WordFrequency::increment(const std::string &word) { ind[word]++; }
+void WordFrequency::reset() { ind.clear(); }
 std::vector<std::string> WordFrequency::get_best_candidates() {
     std::vector<std::string> candidates;
     auto it = ind.begin();

@@ -25,29 +25,16 @@ class NgramBuilder {
     int exists(std::string &key);
     void search_best_ngram(std::string word);
     std::vector<std::string> get_best_candidates();
+    void reset_candidates();
 };
 
 class NgramSearcher {
-  NgramBuilder* ngram_builder = nullptr;
-public:
-  NgramSearcher(NgramBuilder* new_builder)
-  {
-    ngram_builder = new_builder;
-  }
+    NgramBuilder *ngram_builder = nullptr;
 
-  std::vector<std::string> get_best_match(std::string word)
-  {
-    std::vector<std::string> result;
-    ngram_builder->search_best_ngram(word);
-    result = ngram_builder->get_best_candidates();
-    return result;
-  }
+  public:
+    NgramSearcher(NgramBuilder *new_builder);
 
-  void change_ngram_builder(NgramBuilder* new_builder)
-  {
-    ngram_builder = new_builder;
-  }
+    std::vector<std::string> get_best_match(std::string word);
 
-
-
+    void change_ngram_builder(NgramBuilder *new_builder);
 };

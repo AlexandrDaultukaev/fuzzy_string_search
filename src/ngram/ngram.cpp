@@ -8,6 +8,20 @@
 #include <string>
 #include <vector>
 
+NgramSearcher::NgramSearcher(NgramBuilder *new_builder) : ngram_builder(new_builder){}
+
+std::vector<std::string> NgramSearcher::get_best_match(std::string word) {
+    std::vector<std::string> result;
+    ngram_builder->search_best_ngram(std::move(word));
+    result = ngram_builder->get_best_candidates();
+    ngram_builder->reset_candidates();
+    return result;
+}
+
+void NgramSearcher::change_ngram_builder(NgramBuilder *new_builder) {
+    ngram_builder = new_builder;
+}
+
 void NgramBuilder::install_dict(const char *path) {
     std::ifstream fin(path);
     if (fin.fail()) {
@@ -73,7 +87,7 @@ int NgramBuilder::exists(std::string &key) {
     return 0;
 }
 
-/**/void NgramBuilder::search_best_ngram(std::string word) {
+void NgramBuilder::search_best_ngram(std::string word) {
     std::vector<std::string> ngramms = get_ngramms(std::move(word));
     for (auto &i : ngramms) {
         if (exists(i) != 0) {
@@ -87,8 +101,11 @@ int NgramBuilder::exists(std::string &key) {
 
 std::vector<std::string> NgramBuilder::get_best_candidates() {
     std::vector<std::string> candidates = freq.get_best_candidates();
-    freq.reset();
     return candidates;
+}
+
+void NgramBuilder::reset_candidates() {
+    freq.reset();
 }
 
 void WordFrequency::increment(const std::string &word) { ind[word]++; }

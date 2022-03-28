@@ -34,10 +34,8 @@ TEST(NgramSuite, Test3) {
              "platitudinisation",
              "platitudinization"}));
     word = ns.get_best_match("ltitde");
-    EXPECT_EQ(word, std::vector<std::string>(
-            {"multititular"}));
+    EXPECT_EQ(word, std::vector<std::string>({"multititular"}));
 }
-
 
 TEST(NgramSuite, Test4) {
     NgramBuilder ng("words_alpha.txt");
@@ -58,8 +56,7 @@ TEST(NgramSuite, Test5) {
 
     ns.change_ngram_builder(&ng_empty);
     word = ns.get_best_match("atitud");
-    EXPECT_EQ(std::vector<std::string>(
-            {"latitude"}), word);
+    EXPECT_EQ(std::vector<std::string>({"latitude"}), word);
 }
 
 TEST(NgramSuite, NegativeTest1) {

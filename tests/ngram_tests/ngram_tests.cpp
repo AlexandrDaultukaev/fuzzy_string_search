@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+const char * db_path = "../../../src/ngram/words_alpha.txt";
+
 TEST(NgramSuite, Test1) {
     NgramBuilder ng;
     ng.set_ngramms("longitude");
@@ -12,14 +14,14 @@ TEST(NgramSuite, Test1) {
 }
 
 TEST(NgramSuite, Test2) {
-    NgramBuilder ng("words_alpha.txt");
+    NgramBuilder ng(db_path);
     NgramSearcher ns(&ng);
     std::vector<std::string> word = ns.get_best_match("ltitde");
     EXPECT_EQ(std::vector<std::string>({"multititular"}), word);
 }
 
 TEST(NgramSuite, Test3) {
-    NgramBuilder ng("words_alpha.txt");
+    NgramBuilder ng(db_path);
     NgramSearcher ns(&ng);
     std::vector<std::string> word = ns.get_best_match("latitude");
     EXPECT_EQ(
@@ -38,7 +40,7 @@ TEST(NgramSuite, Test3) {
 }
 
 TEST(NgramSuite, Test4) {
-    NgramBuilder ng("words_alpha.txt");
+    NgramBuilder ng(db_path);
     NgramSearcher ns(&ng);
     std::vector<std::string> word = ns.get_best_match("la");
     std::vector<std::string> empty_v;
@@ -46,7 +48,7 @@ TEST(NgramSuite, Test4) {
 }
 
 TEST(NgramSuite, Test5) {
-    NgramBuilder ng("words_alpha.txt");
+    NgramBuilder ng(db_path);
     NgramSearcher ns(&ng);
     std::vector<std::string> word = ns.get_best_match("latitude");
 
@@ -60,7 +62,7 @@ TEST(NgramSuite, Test5) {
 }
 
 TEST(NgramSuite, NegativeTest1) {
-    NgramBuilder ng("words_alpha.txt");
+    NgramBuilder ng(db_path);
     NgramSearcher ns(&ng);
     std::vector<std::string> word = ns.get_best_match("latitude");
     EXPECT_NE(

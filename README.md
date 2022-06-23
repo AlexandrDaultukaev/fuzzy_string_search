@@ -1,5 +1,5 @@
 # fuzzy_string_search
-Implementation of a fuzzy dictionary search algorithm using an n-gram index.
+Implementation of a fuzzy dictionary search algorithm using an n-gram index (N=3).
 
 Example:
 
